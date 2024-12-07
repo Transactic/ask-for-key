@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search User</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Search User</h1>
+        <input type="text" id="searchUsername" placeholder="Enter username to search">
+        <br>
+        <button onclick="searchUser()">Search</button>
+        <p id="userInfo"></p>
+        <p id="errorMessage" class="error"></p>
+    </div>
+
+    <script>
+        function searchUser() {
+            const searchUsername = document.getElementById("searchUsername").value;
+            const userInfo = document.getElementById("userInfo");
+            const errorMessage = document.getElementById("errorMessage");
+
+            const allUsers = JSON.parse(localStorage.getItem("keys")) || {};
+            const userData = Object.values(allUsers).find(user => user.username === searchUsername);
+
+            if (userData) {
+                userInfo.textContent = `${searchUsername} has ${userData.followers} followers.`;
+                errorMessage.textContent = '';
+            } else {
+                userInfo.textContent = '';
+                errorMessage.textContent = "User not found.";
+            }
+        }
+    </script>
+</body>
+</html>
