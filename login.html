@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,26 +44,26 @@
 
     <div class="container">
         <h1>Login</h1>
-        <p id="usernameDisplay"></p>
+        <input type="text" id="usernameInput" placeholder="Enter your username">
+        <input type="number" id="followersInput" placeholder="Enter followers count">
         <button onclick="login()">Log In</button>
         <p id="errorMessage" class="error"></p>
     </div>
 
     <script>
-        window.onload = function() {
-            const accountData = JSON.parse(localStorage.getItem("accountData"));
-            if (accountData) {
-                document.getElementById("usernameDisplay").textContent = `Logged in as: ${accountData.username}`;
-            }
-        }
-
         function login() {
-            const accountData = JSON.parse(localStorage.getItem("accountData"));
-            if (accountData) {
-                localStorage.setItem("loggedInUser", JSON.stringify(accountData));
+            const username = document.getElementById("usernameInput").value;
+            const followers = parseInt(document.getElementById("followersInput").value);
+
+            if (username && followers >= 0) {
+                const userData = {
+                    username: username,
+                    followers: followers
+                };
+                localStorage.setItem("loggedInUser", JSON.stringify(userData));
                 window.location.href = "website.html";
             } else {
-                document.getElementById("errorMessage").textContent = "No account data available.";
+                document.getElementById("errorMessage").textContent = "Please enter a valid username and followers count.";
             }
         }
     </script>
