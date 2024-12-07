@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Login</h1>
+        <input type="text" id="usernameInput" placeholder="Enter your username">
+        <br>
+        <button onclick="login()">Log In</button>
+        <p id="errorMessage" class="error"></p>
+    </div>
+
+    <script>
+        function login() {
+            const usernameInput = document.getElementById("usernameInput").value;
+            const errorMessage = document.getElementById("errorMessage");
+            let accountData = JSON.parse(localStorage.getItem("accountData"));
+
+            if (accountData && accountData.username === usernameInput) {
+                localStorage.setItem("loggedInUser", JSON.stringify(accountData));
+                window.location.href = "home.html";
+            } else {
+                errorMessage.textContent = "Username not found. Please try again.";
+            }
+        }
+    </script>
+</body>
+</html>
