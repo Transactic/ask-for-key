@@ -56,16 +56,18 @@
             const customKey = document.getElementById("customKey").value;
             const statusMessage = document.getElementById("statusMessage");
 
-            if (customKey) {
-                const valid = confirm("Is this key valid?");
-
+            if (customKey === "skib_valid") {
+                const valid = true;
                 const keys = JSON.parse(localStorage.getItem("keys")) || {};
                 keys[customKey] = valid;
-
                 localStorage.setItem("keys", JSON.stringify(keys));
-                statusMessage.textContent = `Key "${customKey}" has been ${valid ? "validated" : "invalidated"}.`;
+                statusMessage.textContent = `Key "${customKey}" has been validated.`;
             } else {
-                statusMessage.textContent = "Please enter a key.";
+                const valid = false;
+                const keys = JSON.parse(localStorage.getItem("keys")) || {};
+                keys[customKey] = valid;
+                localStorage.setItem("keys", JSON.stringify(keys));
+                statusMessage.textContent = `Key "${customKey}" has been invalidated.`;
             }
         }
     </script>
