@@ -53,16 +53,19 @@
     </div>
 
     <script>
-        const validKeys = ["key123", "abc456", "xyz789"];
-
         function validateKey() {
             const keyInput = document.getElementById("keyInput").value;
             const errorMessage = document.getElementById("errorMessage");
 
-            if (validKeys.includes(keyInput)) {
-                window.location.href = "home.html";
+            const keys = JSON.parse(localStorage.getItem("keys")) || {};
+            if (keys[keyInput] !== undefined) {
+                if (keys[keyInput]) {
+                    window.location.href = "home.html";
+                } else {
+                    errorMessage.textContent = "Invalid key. Please try again.";
+                }
             } else {
-                errorMessage.textContent = "Invalid key. Please try again.";
+                errorMessage.textContent = "Key does not exist. Please try again.";
             }
         }
     </script>
