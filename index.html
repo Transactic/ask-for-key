@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Enter Key</h1>
+        <input type="text" id="keyInput" placeholder="Enter your key here">
+        <br>
+        <button onclick="validateKey()">Submit</button>
+        <p id="errorMessage" class="error"></p>
+    </div>
+
+    <script>
+        const validKeys = ["key123", "abc456", "xyz789"];
+
+        function validateKey() {
+            const keyInput = document.getElementById("keyInput").value;
+            const errorMessage = document.getElementById("errorMessage");
+
+            if (validKeys.includes(keyInput)) {
+                window.location.href = "home.html";
+            } else {
+                errorMessage.textContent = "Invalid key. Please try again.";
+            }
+        }
+    </script>
+</body>
+</html>
