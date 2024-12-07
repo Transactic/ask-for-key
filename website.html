@@ -24,6 +24,9 @@
         h1 {
             margin-bottom: 20px;
         }
+        .error {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -40,8 +43,7 @@
             if (loggedInUser) {
                 document.getElementById("welcomeMessage").textContent = `Logged in as: ${loggedInUser.username} with ${loggedInUser.followers} followers.`;
             } else {
-                document.getElementById("welcomeMessage").textContent = "You are not logged in. Please log in first.";
-                window.location.href = "login.html";  // Redirect to login if no user data
+                window.location.href = "login.html"; // Redirect to login if not logged in
             }
         }
     </script>
