@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .info {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>My Profile</h1>
+        <p class="info" id="profileInfo">Loading...</p>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const username = localStorage.getItem("username");
+            const followers = localStorage.getItem("followers");
+
+            if (username && followers) {
+                document.getElementById("profileInfo").textContent = `${username} has ${followers} followers.`;
+            } else {
+                document.getElementById("profileInfo").textContent = "No data available.";
+            }
+        }
+    </script>
+</body>
+</html>
