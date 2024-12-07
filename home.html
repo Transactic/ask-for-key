@@ -21,46 +21,105 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        h1 {
-            margin-bottom: 20px;
-        }
-        .info {
-            font-size: 18px;
-        }
         input, button {
             padding: 10px;
             font-size: 16px;
             margin: 10px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .account-list {
+            text-align: left;
+            margin: 20px 0;
+        }
+        .account-item {
+            margin: 5px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Home</h1>
-        <p class="info" id="profileInfo">Loading...</p>
-        <input type="number" id="followersInput" placeholder="Enter followers to add">
-        <br>
-        <button onclick="addFollowers()">Add Followers</button>
+        <h1>Follow Random Accounts</h1>
+        <p id="usernameDisplay">Please log in to follow accounts.</p>
+        <input type="text" id="usernameInput" placeholder="Enter your username">
+        <button onclick="loadRandomAccounts()">Load Random Accounts</button>
+
+        <div id="accountList" class="account-list"></div>
+        <button onclick="followAccounts()">Follow Selected Accounts</button>
+
+        <p id="statusMessage"></p>
     </div>
 
     <script>
-        window.onload = function() {
-            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        const randomAccounts = [];
+        const maxAccounts = 10; // Limit the number of accounts to display
 
-            if (loggedInUser) {
-                document.getElementById("profileInfo").textContent = `${loggedInUser.username} has ${loggedInUser.followers} followers.`;
+        function loadRandomAccounts() {
+            const username = document.getElementById("usernameInput").value;
+            if (!username) {
+                document.getElementById("statusMessage").textContent = "Please enter your username.";
+                return;
+            }
+
+            document.getElementById("usernameDisplay").textContent = `Logged in as: ${username}`;
+
+            // Generate random accounts
+            randomAccounts.length = 0; // Reset the array before generating new accounts
+            const accountListDiv = document.getElementById("accountList");
+            accountListDiv.innerHTML = ""; // Clear previous account list
+
+            for (let i = 0; i < maxAccounts; i++) {
+                const randomUsername = `User${Math.floor(Math.random() * 1000000)}`;
+                const randomFollowers = Math.floor(Math.random() * 10000);
+                const accountDiv = document.createElement("div");
+                accountDiv.classList.add("account-item");
+
+                // Create a checkbox for following the account
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.id = randomUsername;
+
+                accountDiv.appendChild(checkbox);
+                accountDiv.appendChild(document.createTextNode(`${randomUsername} - Followers: ${randomFollowers}`));
+                accountListDiv.appendChild(accountDiv);
+
+                // Add the account data to the randomAccounts array
+                randomAccounts.push({
+                    username: randomUsername,
+                    followers: randomFollowers,
+                    checkbox: checkbox
+                });
             }
         }
 
-        function addFollowers() {
-            const followersInput = document.getElementById("followersInput").value;
+        function followAccounts() {
             const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            if (!loggedInUser) {
+                document.getElementById("statusMessage").textContent = "You are not logged in.";
+                return;
+            }
 
-            if (loggedInUser && followersInput > 0) {
-                loggedInUser.followers += parseInt(followersInput);
-                localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
-                document.getElementById("profileInfo").textContent = `${loggedInUser.username} has ${loggedInUser.followers} followers.`;
+            let followersAdded = 0;
+            randomAccounts.forEach(account => {
+                if (account.checkbox.checked) {
+                    loggedInUser.followers += account.followers; // Increase followers count by the selected account's followers
+                    followersAdded += account.followers;
+                }
+            });
+
+            if (followersAdded > 0) {
+                document.getElementById("statusMessage").textContent = `You have followed accounts and gained ${followersAdded} followers.`;
+                localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser)); // Save the updated user data
+            } else {
+                document.getElementById("statusMessage").textContent = "You didn't select any accounts to follow.";
             }
         }
     </script>
