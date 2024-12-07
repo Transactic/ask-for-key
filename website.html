@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
+    <title>Website</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,36 +24,28 @@
         h1 {
             margin-bottom: 20px;
         }
-        .info {
-            font-size: 18px;
-        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>My Profile</h1>
-        <p class="info" id="profileInfo">Loading...</p>
+        <h1>Welcome to the Website!</h1>
+        <p id="welcomeMessage">Assigning you an account...</p>
     </div>
 
     <script>
-        window.onload = function() {
-            const expirationTime = 60 * 60 * 1000;
-            let accountData = JSON.parse(localStorage.getItem("accountData"));
-
-            if (!accountData || new Date().getTime() - accountData.timestamp > expirationTime) {
-                const username = "User" + Math.floor(Math.random() * 1000);
-                const followers = 0;
-                accountData = {
-                    username: username,
-                    followers: followers,
-                    timestamp: new Date().getTime()
-                };
-                localStorage.setItem("accountData", JSON.stringify(accountData));
-            }
-
-            document.getElementById("profileInfo").textContent = `${accountData.username} has ${accountData.followers} followers.`;
+        const predefinedAccounts = [];
+        for (let i = 0; i < 1000; i++) {
+            predefinedAccounts.push({
+                username: "User" + (i + 1),
+                followers: 0
+            });
         }
+
+        const randomAccount = predefinedAccounts[Math.floor(Math.random() * predefinedAccounts.length)];
+        localStorage.setItem("accountData", JSON.stringify(randomAccount));
+
+        window.location.href = "login.html"; // Redirecting to login
     </script>
 </body>
 </html>
