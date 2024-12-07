@@ -38,14 +38,15 @@
 
     <script>
         window.onload = function() {
-            const username = localStorage.getItem("username");
-            const followers = localStorage.getItem("followers");
+            let username = localStorage.getItem("username");
+            let followers = localStorage.getItem("followers");
 
-            if (username && followers) {
-                document.getElementById("profileInfo").textContent = `${username} has ${followers} followers.`;
-            } else {
-                document.getElementById("profileInfo").textContent = "No data available.";
+            if (!username || !followers) {
+                username = "User" + Math.floor(Math.random() * 1000);
+                followers = 0;
             }
+
+            document.getElementById("profileInfo").textContent = `${username} has ${followers} followers.`;
         }
     </script>
 </body>
