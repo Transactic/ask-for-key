@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Follow Bot</title>
+    <title>Home</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,52 +21,46 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        input {
+        h1 {
+            margin-bottom: 20px;
+        }
+        .info {
+            font-size: 18px;
+        }
+        input, button {
             padding: 10px;
             font-size: 16px;
             margin: 10px 0;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #45a049;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Follow Bot</h1>
-        <label for="username">Enter your username:</label>
+        <h1>Home</h1>
+        <p class="info" id="profileInfo">Loading...</p>
+        <input type="number" id="followersInput" placeholder="Enter followers to add">
         <br>
-        <input type="text" id="username" placeholder="Your Username">
-        <br>
-        <label for="followers">Enter the number of followers you want:</label>
-        <br>
-        <input type="number" id="followers" placeholder="Number of Followers">
-        <br>
-        <button onclick="sendFollowers()">Send Followers</button>
-        <p id="errorMessage" style="color: red;"></p>
+        <button onclick="addFollowers()">Add Followers</button>
     </div>
 
     <script>
-        function sendFollowers() {
-            const username = document.getElementById("username").value;
-            const followers = document.getElementById("followers").value;
-            const errorMessage = document.getElementById("errorMessage");
+        window.onload = function() {
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
-            if (username && followers > 0) {
-                localStorage.setItem("username", username);
-                localStorage.setItem("followers", followers);
-                window.location.href = "website.html";
-            } else {
-                errorMessage.textContent = "Please provide valid username and followers.";
+            if (loggedInUser) {
+                document.getElementById("profileInfo").textContent = `${loggedInUser.username} has ${loggedInUser.followers} followers.`;
+            }
+        }
+
+        function addFollowers() {
+            const followersInput = document.getElementById("followersInput").value;
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+            if (loggedInUser && followersInput > 0) {
+                loggedInUser.followers += parseInt(followersInput);
+                localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+                document.getElementById("profileInfo").textContent = `${loggedInUser.username} has ${loggedInUser.followers} followers.`;
             }
         }
     </script>
