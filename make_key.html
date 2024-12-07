@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generate Valid Keys</title>
+    <title>Make Custom Key</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,53 +21,52 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
         button {
-            padding: 10px 20px;
             background-color: #4CAF50;
             color: white;
             border: none;
             cursor: pointer;
-            font-size: 16px;
         }
         button:hover {
             background-color: #45a049;
         }
-        .key-list {
-            margin-top: 20px;
-            text-align: left;
+        .status {
+            font-size: 14px;
+            color: red;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Generate Valid Keys</h1>
-        <button onclick="generateKeys()">Generate Keys</button>
-        <div class="key-list" id="keyList"></div>
+        <h1>Create a Custom Key</h1>
+        <input type="text" id="customKey" placeholder="Enter your custom key">
+        <br>
+        <button onclick="setKey()">Set Key</button>
+        <p class="status" id="statusMessage"></p>
     </div>
 
     <script>
-        function generateKeys() {
-            const keyListDiv = document.getElementById("keyList");
-            keyListDiv.innerHTML = "";
+        function setKey() {
+            const customKey = document.getElementById("customKey").value;
+            const statusMessage = document.getElementById("statusMessage");
 
-            const numKeys = 5;
-            const keys = [];
+            if (customKey) {
+                const valid = confirm("Is this key valid?");
 
-            for (let i = 0; i < numKeys; i++) {
-                const key = generateRandomKey();
-                keys.push(key);
-                keyListDiv.innerHTML += `<p>${key}</p>`;
+                const keys = JSON.parse(localStorage.getItem("keys")) || {};
+                keys[customKey] = valid;
+
+                localStorage.setItem("keys", JSON.stringify(keys));
+                statusMessage.textContent = `Key "${customKey}" has been ${valid ? "validated" : "invalidated"}.`;
+            } else {
+                statusMessage.textContent = "Please enter a key.";
             }
-        }
-
-        function generateRandomKey() {
-            const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            let key = "";
-            for (let i = 0; i < 6; i++) {
-                key += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            return key;
         }
     </script>
 </body>
