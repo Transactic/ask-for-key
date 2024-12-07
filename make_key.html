@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Make Custom Key</title>
+    <title>Key Management</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,6 +21,9 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        h1 {
+            margin-bottom: 20px;
+        }
         input, button {
             padding: 10px;
             font-size: 16px;
@@ -36,8 +38,7 @@
         button:hover {
             background-color: #45a049;
         }
-        .status {
-            font-size: 14px;
+        .error {
             color: red;
         }
     </style>
@@ -45,30 +46,48 @@
 <body>
 
     <div class="container">
-        <h1>Create a Custom Key</h1>
-        <input type="text" id="customKey" placeholder="Enter your custom key">
+        <h1>Key Management</h1>
+        <input type="text" id="keyInput" placeholder="Enter key to validate or invalidate">
         <br>
-        <button onclick="setKey()">Set Key</button>
-        <p class="status" id="statusMessage"></p>
+        <button onclick="validateKey()">Validate Key</button>
+        <button onclick="invalidateKey()">Invalidate Key</button>
+        <p id="statusMessage"></p>
+        <p id="errorMessage" class="error"></p>
     </div>
 
     <script>
-        function setKey() {
-            const customKey = document.getElementById("customKey").value;
-            const statusMessage = document.getElementById("statusMessage");
+        const VALID_KEY = "skib_valid"; // Demo key for validation
 
-            if (customKey === "skib_valid") {
-                const valid = true;
-                const keys = JSON.parse(localStorage.getItem("keys")) || {};
-                keys[customKey] = valid;
-                localStorage.setItem("keys", JSON.stringify(keys));
-                statusMessage.textContent = `Key "${customKey}" has been validated.`;
+        window.onload = function() {
+            const savedKeyStatus = localStorage.getItem("keyStatus");
+            if (savedKeyStatus) {
+                document.getElementById("statusMessage").textContent = `Current key status: ${savedKeyStatus}`;
             } else {
-                const valid = false;
-                const keys = JSON.parse(localStorage.getItem("keys")) || {};
-                keys[customKey] = valid;
-                localStorage.setItem("keys", JSON.stringify(keys));
-                statusMessage.textContent = `Key "${customKey}" has been invalidated.`;
+                document.getElementById("statusMessage").textContent = "No key status set.";
+            }
+        };
+
+        function validateKey() {
+            const keyInput = document.getElementById("keyInput").value;
+
+            if (keyInput === VALID_KEY) {
+                localStorage.setItem("keyStatus", "Valid");
+                document.getElementById("statusMessage").textContent = "Key is now VALID.";
+                document.getElementById("errorMessage").textContent = "";
+            } else {
+                document.getElementById("errorMessage").textContent = "Invalid key. Try again.";
+            }
+        }
+
+        function invalidateKey() {
+            const keyInput = document.getElementById("keyInput").value;
+
+            if (keyInput === VALID_KEY) {
+                localStorage.setItem("keyStatus", "Invalid");
+                document.getElementById("statusMessage").textContent = "Key is now INVALID.";
+                document.getElementById("errorMessage").textContent = "";
+            } else {
+                document.getElementById("errorMessage").textContent = "Invalid key. Try again.";
             }
         }
     </script>
